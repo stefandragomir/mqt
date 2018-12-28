@@ -3,11 +3,11 @@
 Fun Visualization of different mathematical sets
 
 Features:
- * Mandelbrot Set
- * Julia Set
- * Fatou Set
- * Zoom In functionality
- * Save image
+ * View Mandelbrot Set
+ * View Julia Set (not done yet)
+ * View Fatou Set (not done yet)
+ * Zoom In
+ * Save Image
  * Custom resolution
 
 You will need:
