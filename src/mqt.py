@@ -10,7 +10,7 @@ from mqt_widgets      import MQT_WDG_Window
 from mqt_widgets      import MQT_WDG_Vertical_Toolbar
 from mqt_widgets      import MQT_WDG_Horizontal_Toolbar
 from mqt_widgets      import MQT_WDG_DrawArea
-from mqt_functional   import MQT_Functional
+from mqt_functional   import MQT_Functional_Mandelbrot
 
 """*************************************************************************************************
 ****************************************************************************************************
@@ -21,7 +21,8 @@ class MQT(MQT_WDG_Window):
 
         MQT_WDG_Window.__init__(self)
 
-        self.functional = MQT_Functional()
+        self.pixels     = []
+        self.functional = MQT_Functional_Mandelbrot()
 
         self.draw() 
 
@@ -54,19 +55,52 @@ class MQT(MQT_WDG_Window):
         self.wdg_vtoolbar.register_resolution_clbk(self.clbk_resolution)
         self.wdg_htoolbar.register_refresh_clbk(self.clbk_refresh)
         self.wdg_htoolbar.register_snapshot_clbk(self.clbk_snapshot)
+        self.wdg_htoolbar.register_default_clbk(self.clbk_default)
         self.wdg_htoolbar.register_set_clbk(self.clbk_set)
 
     def draw_image(self):
 
-        self.status.showMessage("Calculating Values ... ")
+        if self.functional:
 
-        _pixels = self.functional.get_pixel_values()
+            self.get_roi()
 
-        self.status.showMessage("Drawing Image ... ")
+            self.pixels = self.functional.get_pixel_values(self.status)
 
-        self.wdg_area.draw_images(_pixels)
+            self.wdg_area.draw_images(self.pixels)
 
-        self.status.showMessage("Done")
+            self.status.set_progress(0)
+
+    def get_roi(self):
+
+        if self.wdg_area.start_point and self.wdg_area.end_point:
+
+            _start_x = self.wdg_area.start_point.x()
+            _start_y = self.wdg_area.start_point.y()
+            _end_x   = self.wdg_area.end_point.x()
+            _end_y   = self.wdg_area.end_point.y()
+
+            _start_pixel = self.find_pixel(_start_x, _start_y)
+            _end_pixel   = self.find_pixel(_end_x  , _end_y)
+
+            if _start_pixel and _end_pixel:
+
+                self.functional.re_start = _start_pixel[5].real
+                self.functional.re_end   = _end_pixel[5].real
+
+                self.functional.im_start = _start_pixel[5].imag
+                self.functional.im_end   = _end_pixel[5].imag
+
+    def find_pixel(self,x,y):
+
+        _the_pixel = None
+
+        for _pixel in self.pixels:
+
+            if _pixel[0] == x and _pixel[1] == y:
+
+                _the_pixel = _pixel
+
+        return _the_pixel
 
     def clbk_resolution(self,resolution):
 
@@ -86,9 +120,21 @@ class MQT(MQT_WDG_Window):
 
         if _crt_set in [list(_set.keys())[0] for _set in CST_SETS]:
 
-            self.functional.set = _crt_set
+            if _crt_set == "Mandelbrot":
+
+                self.functional = MQT_Functional_Mandelbrot()
         else:
-            self.functional.set = None
+            self.set = None
+
+    def clbk_default(self):
+
+        self.wdg_area.start_point = None
+        self.wdg_area.end_point   = None
+
+        if self.functional:
+            self.functional.set_default()
+
+            self.draw_image()
 
 """****************************************************************************
 *******************************************************************************

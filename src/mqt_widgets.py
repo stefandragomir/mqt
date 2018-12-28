@@ -91,13 +91,13 @@ class MQT_WDG_Horizontal_Toolbar(QToolBar):
 
         self.wdg_refresh    = MQT_WDG_Button(MQT_ICON("refresh"),  MQT_ICON("refresh_hover"),  "Refresh Image")
         self.wdg_snapshot   = MQT_WDG_Button(MQT_ICON("snapshot"), MQT_ICON("snapshot_hover"), "Save Image")
+        self.wdg_default    = MQT_WDG_Button(MQT_ICON("default"), MQT_ICON("default_hover"),   "Return to Default")
         self.wdg_set        = MQT_WDG_Selection()
         self.wdg_set.setFixedWidth(110)
-        
-
 
         self.addWidget(self.wdg_refresh)
         self.addWidget(self.wdg_snapshot)
+        self.addWidget(self.wdg_default)
         self.addSeparator()
         self.addWidget(self.wdg_set)
 
@@ -110,6 +110,10 @@ class MQT_WDG_Horizontal_Toolbar(QToolBar):
     def register_snapshot_clbk(self,clbk):
 
         self.wdg_snapshot.register_button_clbk(clbk)
+
+    def register_default_clbk(self,clbk):
+
+        self.wdg_default.register_button_clbk(clbk)
 
     def register_set_clbk(self,clbk):
 
@@ -146,7 +150,18 @@ class MQT_WDG_DrawArea(object):
         self.view  = QGraphicsView(self.scene)
         self.image = None
 
+        self.scene.mousePressEvent   = self.mousePressEvent
+        self.scene.mouseReleaseEvent = self.mouseReleaseEvent
+        self.scene.mouseMoveEvent    = self.mouseMoveEvent
+
+        self.rubber_band = None
+        self.start_point = None
+        self.end_point   = None
+
     def draw_images(self,hsv_pixels):
+
+        if self.rubber_band:
+            self.rubber_band.hide()
 
         self.image = QImage(CST_IMAGE_WIDTH, CST_IMAGE_HEIGHT, QImage.Format_RGB32)
 
@@ -179,6 +194,28 @@ class MQT_WDG_DrawArea(object):
 
             os.system(_path)
 
+    def mousePressEvent(self,event):
+
+        self.start_point = event.screenPos()
+
+        if self.rubber_band:
+            self.rubber_band.hide()
+        else:
+            self.rubber_band =  QRubberBand(QRubberBand.Rectangle)
+
+        self.rubber_band.setGeometry(QRect(self.start_point,QSize()))
+        self.rubber_band.show();
+
+    def mouseMoveEvent(self,event):
+
+        _crt_point = event.screenPos()
+
+        self.rubber_band.setGeometry(QRect(self.start_point, _crt_point).normalized())
+        
+    def mouseReleaseEvent(self,event):
+
+        self.end_point = event.screenPos()
+
 """****************************************************************************
 *******************************************************************************
 ****************************************************************************"""
@@ -188,14 +225,21 @@ class MQT_WDG_StatusBar(QStatusBar):
 
         QStatusBar.__init__(self)
 
+        self.progress = QProgressBar()
+        self.progress.setRange(0, 100)
+        self.progress.setTextVisible(False)
+        self.progress.setValue(0)
+
+        self.addPermanentWidget(self.progress, 2 )
+
+    def set_progress(self,value):
+
+        self.progress.setValue(value)
+        QApplication.instance().processEvents()
+
 """****************************************************************************
 *******************************************************************************
 ****************************************************************************"""
-_WDG_BACK_COLOR    = "#FFFFFF"
-_WDG_BORDER_COLOR  = "#838487"
-_WDG_BORDER_WIDTH  = "1"
-_WDG_BORDER_RADIUS = "2"
-
 class MQT_WDG_Selection(QComboBox):
 
     def __init__(self):
@@ -207,7 +251,7 @@ class MQT_WDG_Selection(QComboBox):
                      border: %spx solid gray;
                      border-color: %s;
                      border-radius: %spx;
-                     """ % (_WDG_BACK_COLOR,_WDG_BORDER_WIDTH,_WDG_BORDER_COLOR,_WDG_BORDER_RADIUS)
+                     """ % ("#FFFFFF","1","#838487","2")
 
 
         self.setStyleSheet(_css)
@@ -265,9 +309,9 @@ class MQT_WDG_Selection(QComboBox):
 
         if self._model_items:
             if str(text) in self._model_items or not len(text):
-                self.setStyleSheet("background-color: white; border: %spx solid gray;" % _WDG_BORDER_WIDTH)
+                self.setStyleSheet("background-color: white; border: %spx solid gray;" % "1")
             else: 
-                self.setStyleSheet("background-color: #ffcccc; border: %spx solid gray;" % _WDG_BORDER_WIDTH)
+                self.setStyleSheet("background-color: #ffcccc; border: %spx solid gray;" % "1")
 
     def register_change(self,clbk):
 
