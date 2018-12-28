@@ -10,7 +10,42 @@ class MQT_Functional(object):
 
     def __init__(self):
 
+        self.set = "Mandelbrot"
+
         self.max_iteration = CST_RESOLUTION_DEFAULT
+
+        self.height        = CST_IMAGE_HEIGHT    
+        self.width         = CST_IMAGE_WIDTH
+
+    def get_pixel_values(self):
+
+        _pixels = []
+
+        if self.set == "Mandelbrot":
+
+            _set = _MQT_Functional_Mandelbrot(self.max_iteration,self.height,self.width)
+
+            _pixels = _set.get_pixel_values()
+        else:
+            if self.set == "Julia":
+
+                pass
+
+
+        return _pixels
+
+"""****************************************************************************
+*******************************************************************************
+****************************************************************************"""
+class _MQT_Functional_Mandelbrot(object):
+
+    def __init__(self,max_iteration,height,width):
+
+        self.max_iteration = max_iteration
+
+        self.height        = height    
+        self.width         = width
+
         self.limit         = 2
 
         self.re_start      = -2
@@ -18,9 +53,6 @@ class MQT_Functional(object):
 
         self.im_start      = -1
         self.im_end        = 1
-
-        self.height        = CST_IMAGE_HEIGHT    
-        self.width         = CST_IMAGE_WIDTH
 
     def __get_mandelbrot_value(self,c):
         """

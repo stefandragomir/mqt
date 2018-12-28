@@ -4,6 +4,7 @@ import sys
 from PyQt5.QtCore     import *
 from PyQt5.QtGui      import *
 from PyQt5.QtWidgets  import * 
+from mqt_constants    import *
 from mqt_widgets      import MQT_WDG_Slider
 from mqt_widgets      import MQT_WDG_Window
 from mqt_widgets      import MQT_WDG_Vertical_Toolbar
@@ -22,7 +23,9 @@ class MQT(MQT_WDG_Window):
 
         self.functional = MQT_Functional()
 
-        self.draw()         
+        self.draw() 
+
+        self.show()        
 
     def draw(self):
 
@@ -50,6 +53,8 @@ class MQT(MQT_WDG_Window):
 
         self.wdg_vtoolbar.register_resolution_clbk(self.clbk_resolution)
         self.wdg_htoolbar.register_refresh_clbk(self.clbk_refresh)
+        self.wdg_htoolbar.register_snapshot_clbk(self.clbk_snapshot)
+        self.wdg_htoolbar.register_set_clbk(self.clbk_set)
 
     def draw_image(self):
 
@@ -71,6 +76,20 @@ class MQT(MQT_WDG_Window):
 
         self.draw_image()
 
+    def clbk_snapshot(self):
+
+        self.wdg_area.snapshot()
+
+    def clbk_set(self,index):
+
+        _crt_set = self.wdg_htoolbar.wdg_set.currentText()
+
+        if _crt_set in [list(_set.keys())[0] for _set in CST_SETS]:
+
+            self.functional.set = _crt_set
+        else:
+            self.functional.set = None
+
 """****************************************************************************
 *******************************************************************************
 ****************************************************************************"""
@@ -79,7 +98,5 @@ if __name__ == "__main__":
     _app = QApplication(sys.argv)  
 
     _ui  = MQT()   
-
-    _ui.show()
 
     sys.exit(_app.exec_())

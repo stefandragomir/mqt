@@ -8,11 +8,16 @@ CST_WINDOW_WIDTH       = 1500
 CST_IMAGE_HEIGHT       = 700
 CST_IMAGE_WIDTH        = 1300
 
-CST_RESOLUTION_MAX     = 160
+CST_RESOLUTION_MAX     = 120
 CST_RESOLUTION_MIN     = 5
 CST_RESOLUTION_DEFAULT = 80
 
 CST_DEFAULT_SATURATION = 255
+
+CST_SETS = [
+				{"Mandelbrot": "Mandelbrot"},
+				{"Julia"     : "Julia"}
+			]
 
 """****************************************************************************
 *******************************************************************************
