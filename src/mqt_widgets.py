@@ -158,21 +158,14 @@ class MQT_WDG_DrawArea(object):
         self.start_point = None
         self.end_point   = None
 
-    def draw_images(self,hsv_pixels):
+    def draw_images(self,image,pixmap):
 
         if self.rubber_band:
             self.rubber_band.hide()
 
-        self.image = QImage(CST_IMAGE_WIDTH, CST_IMAGE_HEIGHT, QImage.Format_RGB32)
+        self.image = image
 
-        for _pixel in hsv_pixels:
-
-            _color = QColor()
-            _color.setHsv(_pixel[2], _pixel[3], _pixel[4], 0xFF)
-
-            self.image.setPixelColor(_pixel[0], _pixel[1], _color)
-
-        self.pixmap = QPixmap.fromImage(self.image)
+        self.pixmap = pixmap
 
         self.scene.addPixmap(self.pixmap);
 

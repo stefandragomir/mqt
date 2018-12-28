@@ -11,6 +11,7 @@ from mqt_widgets      import MQT_WDG_Vertical_Toolbar
 from mqt_widgets      import MQT_WDG_Horizontal_Toolbar
 from mqt_widgets      import MQT_WDG_DrawArea
 from mqt_functional   import MQT_Functional_Mandelbrot
+from mqt_functional   import MQT_Functional_Julia
 
 """*************************************************************************************************
 ****************************************************************************************************
@@ -64,9 +65,9 @@ class MQT(MQT_WDG_Window):
 
             self.get_roi()
 
-            self.pixels = self.functional.get_pixel_values(self.status)
+            _image,_pixmap = self.functional.draw(self.status)
 
-            self.wdg_area.draw_images(self.pixels)
+            self.wdg_area.draw_images(_image,_pixmap)
 
             self.status.set_progress(0)
 
@@ -121,8 +122,10 @@ class MQT(MQT_WDG_Window):
         if _crt_set in [list(_set.keys())[0] for _set in CST_SETS]:
 
             if _crt_set == "Mandelbrot":
-
                 self.functional = MQT_Functional_Mandelbrot()
+            else:
+                if _crt_set == "Julia":
+                    self.functional = MQT_Functional_Julia()
         else:
             self.set = None
 

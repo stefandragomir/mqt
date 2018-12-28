@@ -10,12 +10,16 @@ Features:
  * Save Image
  * Custom resolution
 
-How to run:
- * run the **src/mqt.py** file
-
 You will need:
 * python 3 
 * PyQt 5
+
+
+How to use:
+ * run the **src/mqt.py** file
+ * press the refresh button
+ * to zoom in the image select the area and press refresh
+ * to set the resolution use the right side slider
 
 Example Mandelbrot Set with maximum resolution:
 
