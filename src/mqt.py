@@ -65,7 +65,7 @@ class MQT(MQT_WDG_Window):
 
             self.get_roi()
 
-            _image,_pixmap = self.functional.draw(self.status)
+            _image,_pixmap,self.pixels = self.functional.draw(self.status)
 
             self.wdg_area.draw_images(_image,_pixmap)
 
