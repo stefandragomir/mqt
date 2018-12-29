@@ -58,13 +58,15 @@ class MQT(MQT_WDG_Window):
         self.wdg_htoolbar.register_snapshot_clbk(self.clbk_snapshot)
         self.wdg_htoolbar.register_default_clbk(self.clbk_default)
         self.wdg_htoolbar.register_set_clbk(self.clbk_set)
+        self.wdg_area.register_mouse_move_clbk(self.clbk_mouse_move)
 
     def draw_image(self):
-
-        self.wdg_area.rubber_band.hide()
+        
         self.wdg_area.use_rubber_band = True
 
         if self.functional:
+
+            self.wdg_area.use_rubber_band = False
 
             self.get_roi()
 
@@ -73,6 +75,10 @@ class MQT(MQT_WDG_Window):
             self.wdg_area.draw_images(_image,_pixmap)
 
             self.status.set_progress(0)
+
+            self.wdg_area.rubber_band.hide()
+
+            self.wdg_area.use_rubber_band = True
 
     def get_roi(self):
 
@@ -105,6 +111,10 @@ class MQT(MQT_WDG_Window):
                 _the_pixel = _pixel
 
         return _the_pixel
+
+    def clbk_mouse_move(self,point):
+
+        print(point)
 
     def clbk_resolution(self,resolution):
 

@@ -170,7 +170,9 @@ class MQT_WDG_DrawArea(object):
 
         self.use_rubber_band = False
 
-        self.rubber_band =  QRubberBand(QRubberBand.Rectangle)
+        self.rubber_band =  QRubberBand(QRubberBand.Rectangle,self.view)
+
+        self.mouse_move_clbk = None
 
     def draw_images(self,image,pixmap):
 
@@ -201,28 +203,36 @@ class MQT_WDG_DrawArea(object):
 
             os.system(_path)
 
+    def register_mouse_move_clbk(self,clbk):
+
+        self.mouse_move_clbk = clbk
+
     def mousePressEvent(self,event):
 
         if self.use_rubber_band:
 
-            self.start_point = event.screenPos()
+            self.start_point = event.scenePos().toPoint()
 
             self.rubber_band.hide()
             self.rubber_band.show()
 
     def mouseMoveEvent(self,event):
 
+        _offset = QPoint(CST_SCENE_OFFSET_X,CST_SCENE_OFFSET_Y)
+
         if self.use_rubber_band:
 
-            _crt_point = event.screenPos()
+            _crt_point = event.scenePos().toPoint()
 
-            self.rubber_band.setGeometry(QRect(self.start_point, _crt_point).normalized())
+            self.rubber_band.setGeometry(QRect(self.start_point + _offset, _crt_point + _offset).normalized())
+
+            self.mouse_move_clbk(_crt_point)
         
     def mouseReleaseEvent(self,event):
 
         if self.use_rubber_band:
 
-            self.end_point = event.screenPos()
+            self.end_point = event.scenePos()
 
 """****************************************************************************
 *******************************************************************************
