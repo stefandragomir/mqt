@@ -25,7 +25,7 @@ Example Mandelbrot Set with maximum resolution:
 
 ![alt text](https://github.com/stefandragomir/mqt/blob/master/docs/wiki/1.png)
 
-Example Mandelbrot Set with low resolution:
+Example Mandelbrot Set zoomed in:
 
 ![alt text](https://github.com/stefandragomir/mqt/blob/master/docs/wiki/2.png)
 
@@ -33,7 +33,7 @@ Example Julia Set:
 
 ![alt text](https://github.com/stefandragomir/mqt/blob/master/docs/wiki/3.png)
 
-Example Zommed Julia Set:
+Example Julia Set zoomed in:
 
 ![alt text](https://github.com/stefandragomir/mqt/blob/master/docs/wiki/4.png)
 

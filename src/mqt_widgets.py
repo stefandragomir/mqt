@@ -98,6 +98,8 @@ class MQT_WDG_Horizontal_Toolbar(QToolBar):
         self.wdg_default    = MQT_WDG_Button(MQT_ICON("default"), MQT_ICON("default_hover"),   "Return to Default")
         self.wdg_set        = MQT_WDG_Selection()
         self.wdg_set.setFixedWidth(160)
+        self.wdg_color_base = MQT_WDG_Selection()
+        self.wdg_color_base.setFixedWidth(120)
 
 
         self.wdg_custom_power  = MQT_WDG_Input("z power = ")
@@ -119,6 +121,8 @@ class MQT_WDG_Horizontal_Toolbar(QToolBar):
         self.addSeparator()
         self.addWidget(self.wdg_set)
         self.addSeparator()
+        self.addWidget(self.wdg_color_base)
+        self.addSeparator()
         self.addWidget(self.wdg_formula)
         self.addSeparator()
         self.addWidget(self.wdg_custom_power)
@@ -128,6 +132,7 @@ class MQT_WDG_Horizontal_Toolbar(QToolBar):
         self.custom_input_visibility(False)
 
         self.wdg_set.populate(CST_SETS)
+        self.wdg_color_base.populate(CST_COLOR_BASE)
 
     def register_refresh_clbk(self,clbk):
 
@@ -144,6 +149,10 @@ class MQT_WDG_Horizontal_Toolbar(QToolBar):
     def register_set_clbk(self,clbk):
 
         self.wdg_set.register_change(clbk)
+
+    def register_color_base_clbk(self,clbk):
+
+        self.wdg_color_base.register_change(clbk)
 
     def register_custom_power_clbk(self,clbk):
 

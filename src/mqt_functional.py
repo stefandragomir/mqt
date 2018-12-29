@@ -1,4 +1,4 @@
-
+import sys
 from PyQt5.QtCore     import *
 from PyQt5.QtGui      import *
 from PyQt5.QtWidgets  import * 
@@ -12,9 +12,44 @@ class _MQT_Functional_Base(object):
 
     def __init__(self):
 
+        self.color_base    = "Blue"
+
         self.max_iteration = CST_RESOLUTION_1_DEFAULT
         self.height        = CST_IMAGE_HEIGHT    
         self.width         = CST_IMAGE_WIDTH
+
+    def get_pixel_color_saturation(self,set_value):
+
+        return CST_DEFAULT_SATURATION
+
+    def get_pixel_color_hue(self,set_value):
+
+        _offset = 200
+
+        if self.color_base == "Orange":
+            _offset = 0
+        elif self.color_base == "Yellow":
+            _offset = 50
+        elif self.color_base == "Green":
+            _offset = 100
+        elif self.color_base == "Light Green":
+            _offset = 150
+        elif self.color_base == "Blue":
+            _offset = 200
+        elif self.color_base == "High Contrast":
+            _offset = 220
+
+        return (int(255 * (set_value / self.max_iteration)) + _offset) % 255
+
+    def get_pixel_color_value(self,set_value):
+
+        if self.color_base == "Dark":
+
+            _value = int(255 * (set_value / self.max_iteration))
+        else:
+            _value = 255 if set_value < self.max_iteration else 0
+
+        return _value
 
 """****************************************************************************
 *******************************************************************************
@@ -35,8 +70,8 @@ class MQT_Functional_Mandelbrot(_MQT_Functional_Base):
 
         z              = 0
         _crt_iteration = 0
-        _re_offset     = (x / self.width)  * (self.re_end - self.re_start)
-        _im_offset     = (y / self.height) * (self.im_end - self.im_start)
+        _re_offset     = (float(x) / float(self.width))  * (float(self.re_end) - float(self.re_start))
+        _im_offset     = (float(y) / float(self.height)) * (float(self.im_end) - float(self.im_start))
 
         c = complex(self.re_start + _re_offset, self.im_start + _im_offset)
 
@@ -81,9 +116,9 @@ class MQT_Functional_Mandelbrot(_MQT_Functional_Base):
                 _pixels.append([
                                 x,
                                 y,
-                                int(255 * _value / self.max_iteration),
-                                CST_DEFAULT_SATURATION,
-                                255 if _value < self.max_iteration else 0,
+                                self.get_pixel_color_hue(_value),
+                                self.get_pixel_color_saturation(_value),
+                                self.get_pixel_color_value(_value),
                                 c])
 
                 observer.set_progress((100.0/float(_prg_total)) * _prg_crt)
@@ -158,9 +193,9 @@ class MQT_Functional_Julia(_MQT_Functional_Base):
                 _pixels.append([
                                 x,
                                 y,
-                                int(255 * _value / self.max_iteration),
-                                CST_DEFAULT_SATURATION,
-                                255 if _value < self.max_iteration else 0,
+                                self.get_pixel_color_hue(_value),
+                                self.get_pixel_color_saturation(_value),
+                                self.get_pixel_color_value(_value),
                                 _z])
 
                 observer.set_progress((100.0/float(_prg_total)) * _prg_crt)
@@ -170,8 +205,6 @@ class MQT_Functional_Julia(_MQT_Functional_Base):
         return _pixels
 
     def draw(self,observer):
-
-        print(self.power,self.real_c,self.imag_c)
 
         _pixels = self.__get_pixel_values(observer)
 

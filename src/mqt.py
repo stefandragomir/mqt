@@ -35,6 +35,7 @@ class MQT(MQT_WDG_Window):
         self.wdg_htoolbar = MQT_WDG_Horizontal_Toolbar()
         self.wdg_area     = MQT_WDG_DrawArea()
         self.wdg_central  = QWidget()
+        self.color_base   = "Blue"
 
         self.ly_top    = QHBoxLayout()
         self.ly_top.addWidget(self.wdg_htoolbar)
@@ -58,6 +59,7 @@ class MQT(MQT_WDG_Window):
         self.wdg_htoolbar.register_snapshot_clbk(self.clbk_snapshot)
         self.wdg_htoolbar.register_default_clbk(self.clbk_default)
         self.wdg_htoolbar.register_set_clbk(self.clbk_set)
+        self.wdg_htoolbar.register_color_base_clbk(self.clbk_color_base)
         self.wdg_area.register_mouse_move_clbk(self.clbk_mouse_move)
         self.wdg_htoolbar.register_custom_power_clbk(self.clbk_custom_power)
         self.wdg_htoolbar.register_custom_imag_c_clbk(self.clbk_custom_imag_c)
@@ -119,7 +121,9 @@ class MQT(MQT_WDG_Window):
 
     def clbk_mouse_move(self,point):
 
-        print(point)
+        pass
+
+        #print(point)
 
     def clbk_resolution(self,resolution):
 
@@ -134,6 +138,14 @@ class MQT(MQT_WDG_Window):
     def clbk_snapshot(self):
 
         self.wdg_area.snapshot()
+
+    def clbk_color_base(self,index):
+
+         _crt_color_base = self.wdg_htoolbar.wdg_color_base.currentText()
+
+         if _crt_color_base in [list(_color_base.keys())[0] for _color_base in CST_COLOR_BASE]:
+
+            self.functional.color_base = _crt_color_base
 
     def clbk_set(self,index):
 
@@ -273,7 +285,7 @@ class MQT(MQT_WDG_Window):
                 self.wdg_htoolbar.custom_input_visibility(True)
                 self.wdg_htoolbar.wdg_formula.setText("")
 
-
+            self.functional.color_base = self.color_base
 
         else:
             self.set = None
