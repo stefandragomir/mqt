@@ -12,7 +12,7 @@ class _MQT_Functional_Base(object):
 
     def __init__(self):
 
-        self.max_iteration = CST_RESOLUTION_DEFAULT
+        self.max_iteration = CST_RESOLUTION_1_DEFAULT
         self.height        = CST_IMAGE_HEIGHT    
         self.width         = CST_IMAGE_WIDTH
 
@@ -26,10 +26,8 @@ class MQT_Functional_Mandelbrot(_MQT_Functional_Base):
         _MQT_Functional_Base.__init__(self)
 
         self.limit         = 2
-
         self.re_start      = -2
         self.re_end        = 1
-
         self.im_start      = -1
         self.im_end        = 1
 
@@ -96,9 +94,9 @@ class MQT_Functional_Mandelbrot(_MQT_Functional_Base):
 
     def set_default(self):
 
+        self.limit         = 2
         self.re_start      = -2
         self.re_end        = 1
-
         self.im_start      = -1
         self.im_end        = 1
 
@@ -111,7 +109,7 @@ class MQT_Functional_Julia(_MQT_Functional_Base):
 
         _MQT_Functional_Base.__init__(self)
 
-        self.max_iteration = 100
+        self.max_iteration = 1000
         self.limit         = 10
         self.re_start      = -1.5
         self.re_end        = 1.5
@@ -181,8 +179,9 @@ class MQT_Functional_Julia(_MQT_Functional_Base):
 
     def set_default(self):
 
-        self.re_start      = -2
-        self.re_end        = 1
-
-        self.im_start      = -1
-        self.im_end        = 1
+        self.max_iteration = 1000
+        self.limit         = 10
+        self.re_start      = -1.5
+        self.re_end        = 1.5
+        self.im_start      = -1.5
+        self.im_end        = 1.5

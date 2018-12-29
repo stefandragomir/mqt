@@ -79,6 +79,10 @@ class MQT_WDG_Vertical_Toolbar(QToolBar):
 
         self.wdg_resolution.register_value_changed(clbk)
 
+    def set_resolution_boundry(self,min,max,value):
+
+        self.wdg_resolution.set_boundry(min,max,value)
+
 """****************************************************************************
 *******************************************************************************
 ****************************************************************************"""
@@ -131,13 +135,19 @@ class MQT_WDG_Slider(QSlider):
         self.setTickPosition(QSlider.NoTicks)
         self.setMinimumSize(20, 700)
         self.setTickInterval(1)
-        self.setMaximum(CST_RESOLUTION_MAX)
-        self.setMinimum(CST_RESOLUTION_MIN)
-        self.setValue(CST_RESOLUTION_DEFAULT)
+        self.setMaximum(CST_RESOLUTION_1_MAX)
+        self.setMinimum(CST_RESOLUTION_1_MIN)
+        self.setValue(CST_RESOLUTION_1_DEFAULT)
 
     def register_value_changed(self,clbk):
 
         self.valueChanged.connect(clbk)
+
+    def set_boundry(self,min,max,value):
+
+        self.setMaximum(max)
+        self.setMinimum(min)
+        self.setValue(value)
 
 """****************************************************************************
 *******************************************************************************
@@ -157,6 +167,10 @@ class MQT_WDG_DrawArea(object):
         self.rubber_band = None
         self.start_point = None
         self.end_point   = None
+
+        self.use_rubber_band = False
+
+        self.rubber_band =  QRubberBand(QRubberBand.Rectangle)
 
     def draw_images(self,image,pixmap):
 
@@ -189,25 +203,26 @@ class MQT_WDG_DrawArea(object):
 
     def mousePressEvent(self,event):
 
-        self.start_point = event.screenPos()
+        if self.use_rubber_band:
 
-        if self.rubber_band:
+            self.start_point = event.screenPos()
+
             self.rubber_band.hide()
-        else:
-            self.rubber_band =  QRubberBand(QRubberBand.Rectangle)
-
-        self.rubber_band.setGeometry(QRect(self.start_point,QSize()))
-        self.rubber_band.show();
+            self.rubber_band.show()
 
     def mouseMoveEvent(self,event):
 
-        _crt_point = event.screenPos()
+        if self.use_rubber_band:
 
-        self.rubber_band.setGeometry(QRect(self.start_point, _crt_point).normalized())
+            _crt_point = event.screenPos()
+
+            self.rubber_band.setGeometry(QRect(self.start_point, _crt_point).normalized())
         
     def mouseReleaseEvent(self,event):
 
-        self.end_point = event.screenPos()
+        if self.use_rubber_band:
+
+            self.end_point = event.screenPos()
 
 """****************************************************************************
 *******************************************************************************

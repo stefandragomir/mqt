@@ -4,7 +4,7 @@ Fun Visualization of different mathematical sets
 
 Features:
  * View Mandelbrot Set
- * View Julia Set (not done yet)
+ * View Julia Set
  * View Fatou Set (not done yet)
  * Zoom In
  * Save Image

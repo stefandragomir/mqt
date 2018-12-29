@@ -61,6 +61,9 @@ class MQT(MQT_WDG_Window):
 
     def draw_image(self):
 
+        self.wdg_area.rubber_band.hide()
+        self.wdg_area.use_rubber_band = True
+
         if self.functional:
 
             self.get_roi()
@@ -122,9 +125,11 @@ class MQT(MQT_WDG_Window):
         if _crt_set in [list(_set.keys())[0] for _set in CST_SETS]:
 
             if _crt_set == "Mandelbrot":
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_1_MIN,CST_RESOLUTION_1_MAX,CST_RESOLUTION_1_DEFAULT)
                 self.functional = MQT_Functional_Mandelbrot()
             else:
                 if _crt_set == "Julia":
+                    self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
                     self.functional = MQT_Functional_Julia()
         else:
             self.set = None
