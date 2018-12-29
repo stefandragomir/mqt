@@ -1,0 +1,1 @@
+pyinstaller --onedir --windowed --debug=all mqt.py
