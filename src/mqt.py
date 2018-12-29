@@ -59,6 +59,11 @@ class MQT(MQT_WDG_Window):
         self.wdg_htoolbar.register_default_clbk(self.clbk_default)
         self.wdg_htoolbar.register_set_clbk(self.clbk_set)
         self.wdg_area.register_mouse_move_clbk(self.clbk_mouse_move)
+        self.wdg_htoolbar.register_custom_power_clbk(self.clbk_custom_power)
+        self.wdg_htoolbar.register_custom_imag_c_clbk(self.clbk_custom_imag_c)
+        self.wdg_htoolbar.register_custom_real_c_clbk(self.clbk_custom_real_c)
+
+        self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
 
     def draw_image(self):
         
@@ -120,6 +125,8 @@ class MQT(MQT_WDG_Window):
 
         self.functional.max_iteration = resolution
 
+        self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
     def clbk_refresh(self):
 
         self.draw_image()
@@ -135,12 +142,139 @@ class MQT(MQT_WDG_Window):
         if _crt_set in [list(_set.keys())[0] for _set in CST_SETS]:
 
             if _crt_set == "Mandelbrot":
+
                 self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_1_MIN,CST_RESOLUTION_1_MAX,CST_RESOLUTION_1_DEFAULT)
                 self.functional = MQT_Functional_Mandelbrot()
-            else:
-                if _crt_set == "Julia":
-                    self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
-                    self.functional = MQT_Functional_Julia()
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+            elif _crt_set == "Julia":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia()
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+            elif _crt_set == "Julia Custom 1":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=1-CST_GOLDEN_RATIO,imag_c=0)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+            elif _crt_set == "Julia Custom 2":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=CST_GOLDEN_RATIO-2,imag_c=CST_GOLDEN_RATIO-1)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 3":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=0.285,imag_c=0)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 4":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=0.285,imag_c=0.01)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 5":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=0.45,imag_c=0.1428)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 6":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=-0.70176,imag_c=-0.3842)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 7":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=-0.835,imag_c=-0.2321)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 8":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=-0.8,imag_c=-0.156)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 9":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=-0.7269,imag_c=0.1889)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 10":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=0,imag_c=-0.8)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 11":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=2,real_c=0.279,imag_c=0)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 12":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=3,real_c=0.400,imag_c=0)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 13":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=4,real_c=0.484,imag_c=0)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Julia Custom 14":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia(power=4,real_c=0.626)
+                self.wdg_htoolbar.custom_input_visibility(False)
+                self.wdg_htoolbar.wdg_formula.setText(self.functional.formula_text())
+
+
+            elif _crt_set == "Custom Julia":
+
+                self.wdg_vtoolbar.set_resolution_boundry(CST_RESOLUTION_2_MIN,CST_RESOLUTION_2_MAX,CST_RESOLUTION_2_DEFAULT)
+                self.functional = MQT_Functional_Julia()
+                self.wdg_htoolbar.custom_input_visibility(True)
+                self.wdg_htoolbar.wdg_formula.setText("")
+
+
+
         else:
             self.set = None
 
@@ -153,6 +287,19 @@ class MQT(MQT_WDG_Window):
             self.functional.set_default()
 
             self.draw_image()
+
+    def clbk_custom_power(self,value):
+
+        self.functional.power  = value
+
+    def clbk_custom_imag_c(self,value):
+
+        self.functional.imag_c  = value
+
+    def clbk_custom_real_c(self,value):
+
+        self.functional.real_c = value
+
 
 """****************************************************************************
 *******************************************************************************

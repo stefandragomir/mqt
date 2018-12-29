@@ -100,12 +100,16 @@ class MQT_Functional_Mandelbrot(_MQT_Functional_Base):
         self.im_start      = -1
         self.im_end        = 1
 
+    def formula_text(self):
+
+        return "f(z) = pow(z,2) + c with lim(f(z)) <= 2 and %s iterations" % (self.max_iteration)
+
 """****************************************************************************
 *******************************************************************************
 ****************************************************************************"""
 class MQT_Functional_Julia(_MQT_Functional_Base):
 
-    def __init__(self):
+    def __init__(self,power=2,real_c=-0.1,imag_c=0.65):
 
         _MQT_Functional_Base.__init__(self)
 
@@ -116,6 +120,10 @@ class MQT_Functional_Julia(_MQT_Functional_Base):
         self.im_start      = -1.5
         self.im_end        = 1.5
 
+        self.power  = power
+        self.real_c = real_c
+        self.imag_c = imag_c
+
     def __get_julia_value(self,x,y):
 
         _crt_iteration = 0
@@ -123,11 +131,12 @@ class MQT_Functional_Julia(_MQT_Functional_Base):
         _im_offset = (y / self.height) * (self.im_end - self.im_start)
 
         z = complex(self.re_start + _re_offset, self.im_start + _im_offset)
-        c = complex(-0.1, 0.65)
+        z_init = z
+        c = complex(self.real_c, self.imag_c)
 
         while abs(z) <= self.limit and _crt_iteration < self.max_iteration:
 
-            z = z * z + c
+            z = z**self.power + c
 
             _crt_iteration += 1
 
@@ -162,6 +171,8 @@ class MQT_Functional_Julia(_MQT_Functional_Base):
 
     def draw(self,observer):
 
+        print(self.power,self.real_c,self.imag_c)
+
         _pixels = self.__get_pixel_values(observer)
 
         _image = QImage(CST_IMAGE_WIDTH, CST_IMAGE_HEIGHT, QImage.Format_RGB32)
@@ -185,3 +196,8 @@ class MQT_Functional_Julia(_MQT_Functional_Base):
         self.re_end        = 1.5
         self.im_start      = -1.5
         self.im_end        = 1.5
+
+    def formula_text(self):
+
+        return "f(z) = pow(z,%s) + (%s + %si) with lim(f(z)) <= %s and %s iterations" % (self.power,self.real_c,self.imag_c,self.limit,self.max_iteration)
+

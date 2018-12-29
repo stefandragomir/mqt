@@ -5,7 +5,7 @@ Fun Visualization of different mathematical sets
 Features:
  * View Mandelbrot Set
  * View Julia Set
- * View Fatou Set (not done yet)
+ * View Custom formulas
  * Zoom In
  * Save Image
  * Custom resolution
@@ -28,3 +28,15 @@ Example Mandelbrot Set with maximum resolution:
 Example Mandelbrot Set with low resolution:
 
 ![alt text](https://github.com/stefandragomir/mqt/blob/master/docs/wiki/2.png)
+
+Example Julia Set:
+
+![alt text](https://github.com/stefandragomir/mqt/blob/master/docs/wiki/3.png)
+
+Example Zommed Julia Set:
+
+![alt text](https://github.com/stefandragomir/mqt/blob/master/docs/wiki/4.png)
+
+Example Custom Julia Set:
+
+![alt text](https://github.com/stefandragomir/mqt/blob/master/docs/wiki/5.png)

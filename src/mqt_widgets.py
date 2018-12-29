@@ -97,13 +97,35 @@ class MQT_WDG_Horizontal_Toolbar(QToolBar):
         self.wdg_snapshot   = MQT_WDG_Button(MQT_ICON("snapshot"), MQT_ICON("snapshot_hover"), "Save Image")
         self.wdg_default    = MQT_WDG_Button(MQT_ICON("default"), MQT_ICON("default_hover"),   "Return to Default")
         self.wdg_set        = MQT_WDG_Selection()
-        self.wdg_set.setFixedWidth(110)
+        self.wdg_set.setFixedWidth(160)
+
+
+        self.wdg_custom_power  = MQT_WDG_Input("z power = ")
+        self.wdg_custom_power.spin.setValue(2.0)
+        self.wdg_custom_power.spin.setMinimum(-10000)
+        self.wdg_custom_c_real = MQT_WDG_Input("Re(c) = ")        
+        self.wdg_custom_c_real.spin.setMinimum(-10000)
+        self.wdg_custom_c_real.spin.setValue(-0.1)
+        self.wdg_custom_c_imag = MQT_WDG_Input("Im(c) = ")
+        self.wdg_custom_c_imag.spin.setValue(0.65)
+        self.wdg_custom_c_imag.spin.setMinimum(-10000)
+
+        self.wdg_formula = QLabel()
+
 
         self.addWidget(self.wdg_refresh)
         self.addWidget(self.wdg_snapshot)
         self.addWidget(self.wdg_default)
         self.addSeparator()
         self.addWidget(self.wdg_set)
+        self.addSeparator()
+        self.addWidget(self.wdg_formula)
+        self.addSeparator()
+        self.addWidget(self.wdg_custom_power)
+        self.addWidget(self.wdg_custom_c_real)
+        self.addWidget(self.wdg_custom_c_imag)
+
+        self.custom_input_visibility(False)
 
         self.wdg_set.populate(CST_SETS)
 
@@ -122,6 +144,24 @@ class MQT_WDG_Horizontal_Toolbar(QToolBar):
     def register_set_clbk(self,clbk):
 
         self.wdg_set.register_change(clbk)
+
+    def register_custom_power_clbk(self,clbk):
+
+        self.wdg_custom_power.register_clbk(clbk)
+        
+    def register_custom_imag_c_clbk(self,clbk):
+
+        self.wdg_custom_c_imag.register_clbk(clbk)
+
+    def register_custom_real_c_clbk(self,clbk):
+
+        self.wdg_custom_c_real.register_clbk(clbk)
+
+    def custom_input_visibility(self,status):
+
+        self.wdg_custom_power.set_visibility(status)
+        self.wdg_custom_c_real.set_visibility(status)
+        self.wdg_custom_c_imag.set_visibility(status)
 
 """****************************************************************************
 *******************************************************************************
@@ -232,7 +272,7 @@ class MQT_WDG_DrawArea(object):
 
         if self.use_rubber_band:
 
-            self.end_point = event.scenePos()
+            self.end_point = event.scenePos().toPoint()
 
 """****************************************************************************
 *******************************************************************************
@@ -334,3 +374,45 @@ class MQT_WDG_Selection(QComboBox):
     def register_change(self,clbk):
 
         self.currentIndexChanged.connect(clbk)
+
+"""****************************************************************************
+*******************************************************************************
+****************************************************************************"""
+class MQT_WDG_Input(QWidget):
+
+    def __init__(self,label):
+
+        QWidget.__init__(self)
+
+        self.label = QLabel(label)
+        self.spin  = QDoubleSpinBox()
+
+
+        self.ly = QHBoxLayout()
+
+        self.ly.addWidget(self.label)
+        self.ly.addWidget(self.spin)
+
+        self.setLayout(self.ly)
+
+    def set_visibility(self,status):
+
+        if status:
+
+            self.label.show()
+            self.spin.show()
+            self.show()
+        else:
+
+            self.label.hide()
+            self.spin.hide()
+            self.hide()
+
+    def value(self):
+
+        return self.spin.value()
+
+    def register_clbk(self,clbk):
+
+        self.spin.valueChanged.connect(clbk)
+
