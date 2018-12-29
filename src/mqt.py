@@ -150,6 +150,8 @@ class MQT(MQT_WDG_Window):
     def clbk_set(self,index):
 
         _crt_set = self.wdg_htoolbar.wdg_set.currentText()
+        self.wdg_area.start_point = None
+        self.wdg_area.end_point   = None
 
         if _crt_set in [list(_set.keys())[0] for _set in CST_SETS]:
 
