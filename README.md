@@ -14,6 +14,7 @@ You will need:
 * python 3 
 * PyQt 5
 
+See article: https://www.inginerpebega.com/post/pretty-pictures
 
 How to use:
  * run the **src/mqt.py** file
